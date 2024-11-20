@@ -1,0 +1,17 @@
+{
+  "name": "lyricloop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.cs.nuim.ie/u220516/dsl.git"
+  },
+  "author": "Ethan Toomey, Ciara Maguire, Joe Smullen, Bradley Ekhodiahi",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
