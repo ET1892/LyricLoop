@@ -6,7 +6,7 @@ const https = require('https');
 const MONGO_URI = 'mongodb+srv://ciara03:zjNioxrx3AC7LzxV@cluster0.nfjml.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 const PORT = 3000;
 const mongoose = require('mongoose');
-const authRoutes = require('./auth'); // Adjust the path to your `auth.js` file
+const authRoutes = require('./auth'); 
 
 const app = express();
 
@@ -22,10 +22,9 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch((err) => console.error('Error connecting to MongoDB:', err));
 
 // Routes
-app.use('/', authRoutes); // Use auth routes for signup, login, and logout
+app.use('/', authRoutes);
 
 
-// Serve static files (e.g., CSS) from the 'public' directory
 app.use(express.static('public'));
 
 // Disable SSL verification for Spotify API requests
@@ -35,7 +34,7 @@ const agent = new https.Agent({
 
 // Genius API Token
 const GENIUS_ACCESS_TOKEN = 'Fx7g281iqxlMV0fZoicMsHEbuslwIx7DilhUR4IsukTttMALi_QAAPq2cL44BSRd';
-const LAST_FM_API_KEY = 'a8567be2f970e353343008b43db2fa9f'; // Make this globally accessible
+const LAST_FM_API_KEY = 'a8567be2f970e353343008b43db2fa9f'; 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
 
