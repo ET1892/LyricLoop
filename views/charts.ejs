@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyric Loop | Charts</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #EAEAEA;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        a:hover {
+            color: #FF5722;
+        }
+
+        /* Header Styling */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: #1E1E1E;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            color: #FF5722;
+        }
+
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-item {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active {
+            background-color: #FF5722;
+            color: #FFFFFF;
+        }
+
+        .nav-item:hover {
+            background-color: #E64A19;
+            color: #FFFFFF;
+        }
+
+        .logout-button {
+            font-size: 16px;
+            padding: 10px 15px;
+            border: 1px solid #FF5722;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #FF5722;
+            color: #FFFFFF;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #FFFFFF;
+            text-transform: uppercase;
+        }
+
+        /* Chart List Styles */
+        .chart-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto;
+            max-width: 800px;
+            text-align: left;
+        }
+
+        .chart-item {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            background-color: #1E1E1E;
+            border-radius: 8px;
+            padding: 15px 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .chart-item:hover {
+            background-color: #FF5722;
+            color: #FFFFFF;
+            transform: scale(1.02);
+        }
+
+        .artist-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 20px;
+            object-fit: cover;
+            border: 2px solid #FF5722;
+        }
+
+        .song-info {
+            flex: 1;
+        }
+
+        .song-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+            color: inherit;
+        }
+
+        .artist-name {
+            font-size: 14px;
+            margin: 5px 0;
+            color: #BBBBBB;
+        }
+
+        .listeners {
+            font-size: 12px;
+            color: #888888;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #1E1E1E;
+            color: #777;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with navigation -->
+    <header class="header">
+        <div class="logo">
+            <h1>Lyric Loop</h1>
+        </div>
+        <nav class="nav">
+            <a href="/featured" class="nav-item">Featured</a>
+            <a href="/charts" class="nav-item active">Charts</a>
+            <a href="/search" class="nav-item">Search</a>
+        </nav>
+        <div class="logout">
+            <a href="/login" class="logout-button">Log out</a>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="main-content">
+        <h2 class="section-title">Top 10 Songs</h2>
+        <ul class="chart-list">
+            <% chartData.forEach((item, index) => { %>
+                <li class="chart-item">
+                    <img src="<%= item.image %>" alt="<%= item.artist %>" class="artist-image">
+                    <div class="song-info">
+                        <h3 class="song-title"><%= index + 1 %>. <%= item.track %></h3>
+                        <p class="artist-name">by <%= item.artist %></p>
+                        <p class="listeners">Listeners: <%= item.listeners %></p>
+                    </div>
+                </li>
+            <% }); %>
+        </ul>
+    </main>
+
+    <footer class="footer">
+        <p>© 2024 Lyric Loop. All rights reserved.</p>
+    </footer>
+</body>
+</html>
