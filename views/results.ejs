@@ -1,201 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lyric Loop | Search Results</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    /* General Styles */
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background-color: #121212;
-      color: #EAEAEA;
-    }
+<html lang="en-IE">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+        <!-- TODO Add the search query to this? e.g. "Results for 'kendrick lamar'" -->
+        <title>Search Results | Lyric Loop</title>
 
-    a:hover {
-      color: #FF5722;
-    }
+        <link rel="stylesheet" href="/css/main.css" type="text/css">
+    </head>
 
-    /* Header Styling */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-      background-color: #1E1E1E;
-      border-bottom: 1px solid #333;
-    }
+    <body>
+        <%- include("partials/header.html") -%>
 
-    .logo h1 {
-      font-size: 24px;
-      color: #FF5722;
-    }
+        <main>
+            <!-- TODO Add the search query to this? -->
+            <h2 class="section-title">Search Results</h2>
 
-    .nav {
-      display: flex;
-      gap: 20px;
-    }
-
-    .nav-item {
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 5px;
-      transition: all 0.3s ease;
-    }
-
-    .nav-item.active {
-      background-color: #FF5722;
-      color: #FFFFFF;
-    }
-
-    .nav-item:hover {
-      background-color: #E64A19;
-      color: #FFFFFF;
-    }
-
-    .logout-button {
-      font-size: 16px;
-      padding: 10px 15px;
-      border: 1px solid #FF5722;
-      border-radius: 5px;
-      transition: all 0.3s ease;
-    }
-
-    .logout-button:hover {
-      background-color: #FF5722;
-      color: #FFFFFF;
-    }
-
-    /* Main Content */
-    .main-content {
-      padding: 40px;
-      text-align: center;
-    }
-
-    .results-list {
-      list-style: none;
-      padding: 0;
-      margin: 0 auto;
-      max-width: 800px;
-      text-align: left;
-    }
-
-    .result-item {
-      margin: 20px 0;
-      background-color: #1E1E1E;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .result-item:hover {
-      background-color: #FF5722;
-      color: #FFFFFF;
-      transform: scale(1.02);
-    }
-
-    .lyrics {
-      background-color: #f9f9f9;
-      color: #000;
-      padding: 10px;
-      border-radius: 5px;
-      margin-top: 10px;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
-    .artist-image {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-top: 10px;
-    }
-
-    .back-link {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 15px;
-      background-color: #007bff;
-      color: #FFFFFF;
-      text-decoration: none;
-      border-radius: 5px;
-    }
-
-    .back-link:hover {
-      background-color: #0056b3;
-    }
-
-    iframe {
-      margin-top: 15px;
-      border-radius: 8px;
-    }
-  </style>
-</head>
-<body>
-  <header class="header">
-    <div class="logo">
-      <h1>Lyric Loop</h1>
-    </div>
-    <nav class="nav">
-      <a href="/featured" class="nav-item">Featured</a>
-      <a href="/charts" class="nav-item">Charts</a>
-      <a href="/search" class="nav-item active">Search</a>
-    </nav>
-    <div class="logout">
-      <a href="/login" class="logout-button">Log out</a>
-    </div>
-  </header>
-
-  <main class="main-content">
-    <h2 class="section-title">Search Results</h2>
-    <% if (results.length === 0) { %>
-      <p>No results found for your search. Try a different query.</p>
-    <% } else { %>
-      <ul class="results-list">
-        <% results.forEach(result => { %>
-          <li class="result-item">
-            <h3>Track: <%= result.track || "Unknown Track" %> by <%= result.artist || "Unknown Artist" %></h3>
-            <% if (result.url) { %>
-              <p><strong>Listen on Last.fm:</strong> 
-                <a href="<%= result.url %>" target="_blank">Open on Last.fm</a>
-              </p>
-            <% } %>
-            <% if (result.youtubeVideo) { %>
-              <p><strong>Music Video:</strong></p>
-              <iframe width="560" height="315" 
-                      src="<%= result.youtubeVideo %>" 
-                      frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                      allowfullscreen>
-              </iframe>
+            <% if (results.length === 0) { %>
+                <p>No results found for your search. Try a different query.</p>
             <% } else { %>
-              <p>Music video not available.</p>
+                <ul class="results-list">
+                    <% results.forEach(result => { %>
+                        <li class="result-item">
+                            <hr>
+
+                            <h3>"<%= result.track || "Unknown Track" %>" by <%= result.artist || "Unknown Artist" %></h3>
+
+                            <% if (result.url) { %>
+                                <p><a href="<%= result.url %>">Listen on Last.fm</a></p>
+                            <% } %>
+
+                            <% if (result.youtubeVideo) { %>
+                                <p><strong>Music Video:</strong></p>
+
+                                <iframe
+                                    width="560"
+                                    height="315"
+                                    src="<%= result.youtubeVideo %>"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen
+                                >
+                            <% } else { %>
+                                <p>Music video not available.</p>
+                            <% } %>
+
+                            <p><strong>Lyrics:</strong></p>
+                            <div class="lyrics">
+                                <%= result.lyrics || "Lyrics not found for this song." %>
+                            </div>
+
+                            <div class="artist-details">
+                                <p><strong>Name:</strong> <%= result.artistInfo?.name || "N/A" %></p>
+
+                                <% if (result.artistInfo?.image) { %>
+                                    <img src="<%= result.artistInfo.image %>" alt="Artist Image" class="artist-image">
+                                <% } %>
+
+                                <p><strong>Biography:</strong> <%= result.artistInfo?.bio || "Biography not available." %></p>
+                                <p><strong>Similar Artists:</strong> <%= result.artistInfo?.similarArtists || "No similar artists found." %></p>
+                            </div>
+                        </li>
+                    <% }); %>
+                </ul>
             <% } %>
-            <p><strong>Lyrics:</strong></p>
-            <div class="lyrics">
-              <%= result.lyrics || "Lyrics not found for this song." %>
-            </div>
-            <hr>
-            <div class="artist-details">
-              <p><strong>Name:</strong> <%= result.artistInfo?.name || "N/A" %></p>
-              <% if (result.artistInfo?.image) { %>
-                <img src="<%= result.artistInfo.image %>" alt="Artist Image" class="artist-image">
-              <% } %>
-              <p><strong>Biography:</strong> <%= result.artistInfo?.bio || "Biography not available." %></p>
-              <p><strong>Similar Artists:</strong> <%= result.artistInfo?.similarArtists || "No similar artists found." %></p>
-            </div>
-          </li>
-        <% }); %>
-      </ul>
-    <% } %>
-    <a href="/search" class="back-link">Back to Search</a>
-  </main>
-</body>
+        </main>
+
+        <%- include("partials/footer.html") -%>
+    </body>
 </html>
