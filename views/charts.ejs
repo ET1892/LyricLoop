@@ -12,12 +12,12 @@
         <%- include("partials/header.html") -%>
 
         <main>
-            <h2 class="section-title">Top 10 Songs</h2>
+            <h1 class="section-title">Top 10 Songs</h1>
 
             <ul class="chart-list">
                 <% chartData.forEach((item, index) => { %>
                     <li>
-                        <img src="<%= item.image %>" alt="<%= item.artist %>" class="artist-image">
+                        <img src="<%= item.image %>" alt="<%= item.artist %>" class="artist-image" loading="lazy">
 
                         <div class="song-info">
                             <h3 class="song-title"><%= index + 1 %>. <%= item.track %></h3>

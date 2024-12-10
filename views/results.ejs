@@ -15,7 +15,7 @@
 
         <main>
             <!-- TODO Add the search query to this? -->
-            <h2 class="section-title">Search Results</h2>
+            <h1 class="section-title">Search Results</h1>
 
             <% if (results.length === 0) { %>
                 <p>No results found for your search. Try a different query.</p>
@@ -27,13 +27,7 @@
 
                             <h3>"<%= result.track || "Unknown Track" %>" by <%= result.artist || "Unknown Artist" %></h3>
 
-                            <% if (result.url) { %>
-                                <p><a href="<%= result.url %>">Listen on Last.fm</a></p>
-                            <% } %>
-
                             <% if (result.youtubeVideo) { %>
-                                <p><strong>Music Video:</strong></p>
-
                                 <iframe
                                     width="560"
                                     height="315"
@@ -46,20 +40,23 @@
                                 <p>Music video not available.</p>
                             <% } %>
 
-                            <p><strong>Lyrics:</strong></p>
+                            <h3>Lyrics</h3>
                             <div class="lyrics">
                                 <%= result.lyrics || "Lyrics not found for this song." %>
                             </div>
 
                             <div class="artist-details">
-                                <p><strong>Name:</strong> <%= result.artistInfo?.name || "N/A" %></p>
+                                <h3><%= result.artistInfo?.name || "N/A" %></h3>
 
                                 <% if (result.artistInfo?.image) { %>
-                                    <img src="<%= result.artistInfo.image %>" alt="Artist Image" class="artist-image">
+                                    <img src="<%= result.artistInfo.image %>" alt="Image of <%= result.artistInfo.name %>" class="artist-image" loading="lazy">
                                 <% } %>
 
-                                <p><strong>Biography:</strong> <%= result.artistInfo?.bio || "Biography not available." %></p>
-                                <p><strong>Similar Artists:</strong> <%= result.artistInfo?.similarArtists || "No similar artists found." %></p>
+                                <h3>Biography</h3>
+                                <p><%= result.artistInfo?.bio || "Biography not available." %></p>
+
+                                <h3>Similar Artists</h3>
+                                <p><%= result.artistInfo?.similarArtists || "No similar artists found." %></p>
                             </div>
                         </li>
                     <% }); %>

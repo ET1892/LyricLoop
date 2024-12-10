@@ -45,7 +45,8 @@ header a {
 
 img {
     border: 2px solid var(--orange);
-    max-width: 50%;
+    border-radius: 50%;
+    max-width: 40%;
 }
 
 hr {
@@ -165,5 +166,4 @@ nav {
 .details {
     font-size: 14px;
     margin: 5px 0;
-    color: #BBBBBB;
 }
