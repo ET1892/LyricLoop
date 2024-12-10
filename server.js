@@ -1,16 +1,14 @@
+require("dotenv").config();
+
 const express = require("express");
 const axios = require("axios");
 const cheerio = require("cheerio");
-const https = require("https");
 const mongoose = require("mongoose");
+
 const authRoutes = require("./auth");
 
 const app = express();
-const MONGO_URI = "mongodb+srv://ciara03:zjNioxrx3AC7LzxV@cluster0.nfjml.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const PORT = 3000;
-
-// // Why the hell was this here?
-// process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -19,22 +17,13 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 
 // MongoDB Connection
-mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("Connected to MongoDB"))
-    .catch((err) => console.error("Error connecting to MongoDB:", err));
+    .catch((err) => console.error(`Error connecting to MongoDB: ${err}`));
 
 // Routes
 app.use("/", authRoutes);
 app.use(express.static("public"));
-
-// // Disable SSL verification for Spotify API requests
-// const agent = new https.Agent({
-//     rejectUnauthorized: false,
-// });
-
-// TODO remove these holy shit
-const GENIUS_ACCESS_TOKEN = "Fx7g281iqxlMV0fZoicMsHEbuslwIx7DilhUR4IsukTttMALi_QAAPq2cL44BSRd";
-const LAST_FM_API_KEY = "a8567be2f970e353343008b43db2fa9f";
 
 // Set EJS as the view engine
 app.set("view engine", "ejs");
@@ -51,19 +40,18 @@ function cleanLyrics(lyrics) {
 }
 
 async function getArtistInfo(artistName) {
-    // TODO Get rid of this lol
-    const LAST_FM_API_KEY = "a8567be2f970e353343008b43db2fa9f";
-
     const GENIUS_SEARCH_URL = `https://api.genius.com/search?q=${encodeURIComponent(artistName)}`;
-    const LAST_FM_URL = `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(artistName)}&api_key=${LAST_FM_API_KEY}&format=json`;
+
+    let lastfmUrl = `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(artistName)}`
+    lastfmUrl += `&api_key=${process.env.LAST_FM_API_KEY}&format=json`;
 
     const headers = {
-        Authorization: `Bearer ${GENIUS_ACCESS_TOKEN}`,
+        Authorization: `Bearer ${process.env.GENIUS_ACCESS_TOKEN}`,
     };
 
     try {
         // Fetch artist info from Last.fm
-        const lastFmResponse = await axios.get(LAST_FM_URL);
+        const lastFmResponse = await axios.get(lastfmUrl);
         const artistInfo = lastFmResponse.data.artist;
 
         // Fetch artist image from Genius
@@ -101,9 +89,10 @@ async function getArtistInfo(artistName) {
     }
 }
 
-// Function to search tracks on Spotify
+// Function to search tracks on Last.fm
 async function searchLastFmTracks(query) {
-    const url = `https://ws.audioscrobbler.com/2.0/?method=track.search&track=${encodeURIComponent(query)}&api_key=${LAST_FM_API_KEY}&format=json&limit=10`;
+    let url = `https://ws.audioscrobbler.com/2.0/?method=track.search&track=${encodeURIComponent(query)}`;
+    url += `&api_key=${process.env.LAST_FM_API_KEY}&format=json&limit=10`;
 
     try {
         const response = await axios.get(url);
@@ -122,11 +111,10 @@ async function searchLastFmTracks(query) {
 
 // TODO This is part of the Genius API lol
 async function getYouTubeVideo(track, artist) {
-    // TODO jfc
-    const API_KEY = "AIzaSyBd4awjwxwHDaWfQWr5CFTTPdqKHuzTB4Y";
-
     const searchQuery = `${track} ${artist}`;
-    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${encodeURIComponent(searchQuery)}&key=${API_KEY}`;
+
+    let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1`;
+    url += `&q=${encodeURIComponent(searchQuery)}&key=${process.env.YOUTUBE_API_KEY}`;
 
     try {
         const response = await axios.get(url);
@@ -148,7 +136,7 @@ async function getLyricsFromGenius(songName, artistName) {
     const searchUrl = `https://api.genius.com/search?q=${songName} ${artistName}`;
 
     const headers = {
-        Authorization: `Bearer ${GENIUS_ACCESS_TOKEN}`,
+        Authorization: `Bearer ${process.env.GENIUS_ACCESS_TOKEN}`,
     };
 
     try {
@@ -183,18 +171,17 @@ async function getLyricsFromGenius(songName, artistName) {
 }
 
 async function getChartData(limit = 10) {
-    // TODO jesus christ
-    const GENIUS_ACCESS_TOKEN = "Fx7g281iqxlMV0fZoicMsHEbuslwIx7DilhUR4IsukTttMALi_QAAPq2cL44BSRd";
-    const LAST_FM_API_KEY = "a8567be2f970e353343008b43db2fa9f";
-    const LAST_FM_URL = `https://ws.audioscrobbler.com/2.0/?method=chart.getTopTracks&api_key=${LAST_FM_API_KEY}&format=json&limit=${limit}`;
+    // Chart data from Last.fm
+    let lastfmUrl = `https://ws.audioscrobbler.com/2.0/?method=chart.getTopTracks`;
+    lastfmUrl += `&api_key=${process.env.LAST_FM_API_KEY}&format=json&limit=${limit}`;
 
     const headers = {
-        Authorization: `Bearer ${GENIUS_ACCESS_TOKEN}`,
+        Authorization: `Bearer ${process.env.GENIUS_ACCESS_TOKEN}`,
     };
 
     try {
         // Fetch top tracks from Last.fm
-        const lastFmResponse = await axios.get(LAST_FM_URL);
+        const lastFmResponse = await axios.get(lastfmUrl);
         const tracks = lastFmResponse.data.tracks.track;
 
         const chartData = [];
@@ -326,15 +313,15 @@ app.post("/search", async (req, res) => {
 });
 
 app.get("/featured", async (req, res) => {
-    // TODO God damn lol
-    const LAST_FM_API_KEY = "a8567be2f970e353343008b43db2fa9f";
-    const GENIUS_ACCESS_TOKEN = "Fx7g281iqxlMV0fZoicMsHEbuslwIx7DilhUR4IsukTttMALi_QAAPq2cL44BSRd";
-
-    const headers = { Authorization: `Bearer ${GENIUS_ACCESS_TOKEN}` };
+    const headers = {
+        Authorization: `Bearer ${process.env.GENIUS_ACCESS_TOKEN}`,
+    };
 
     try {
         // Fetch trending artists from Last.fm
-        const trendingArtistsUrl = `https://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=${LAST_FM_API_KEY}&format=json&limit=5`;
+        let trendingArtistsUrl = `https://ws.audioscrobbler.com/2.0/?method=chart.gettopartists`;
+        trendingArtistsUrl += `&api_key=${process.env.LAST_FM_API_KEY}&format=json&limit=10`;
+
         const artistsResponse = await axios.get(trendingArtistsUrl);
         const artists = artistsResponse.data.artists.artist;
 
