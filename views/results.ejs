@@ -25,7 +25,7 @@
                         <li class="result-item">
                             <hr>
 
-                            <h3>"<%= result.track || "Unknown Track" %>" by <%= result.artist || "Unknown Artist" %></h3>
+                            <h2>"<%= result.track || "Unknown Track" %>" by <%= result.artist || "Unknown Artist" %></h2>
 
                             <% if (result.youtubeVideo) { %>
                                 <iframe
@@ -46,10 +46,10 @@
                             </div>
 
                             <div class="artist-details">
-                                <h3><%= result.artistInfo?.name || "N/A" %></h3>
+                                <h2><%= result.artistInfo?.name || "N/A" %></h2>
 
                                 <% if (result.artistInfo?.image) { %>
-                                    <img src="<%= result.artistInfo.image %>" alt="Image of <%= result.artistInfo.name %>" class="artist-image" loading="lazy">
+                                    <img src="<%= result.artistInfo.image %>" alt="Image of <%= result.artistInfo.name %>" loading="lazy">
                                 <% } %>
 
                                 <h3>Biography</h3>

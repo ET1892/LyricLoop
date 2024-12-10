@@ -21,7 +21,6 @@
 
 ## 🎨 style
 
-- Listeners: `toLocaleString()`, or whatever converts e.g. "10000" -> "10,000"
 - CSS: Fix input box width on login pages
 - Add encoded search parameters to /search url?
     - e.g. `localhost:3000/search?q=kendrick+lamar`

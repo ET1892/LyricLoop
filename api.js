@@ -192,7 +192,7 @@ async function getFeaturedArtists() {
 
             featuredData.push({
                 name: artist.name,
-                details: `${artist.listeners} listeners`,
+                details: `${Number(artist.listeners).toLocaleString()} listeners`,
                 image: artistImage,
             });
         }
@@ -252,7 +252,7 @@ async function getChartData(limit = 10) {
             chartData.push({
                 track: track.name,
                 artist: artistName,
-                listeners: track.listeners,
+                listeners: Number(track.listeners).toLocaleString(),
                 image: artistImage,
             });
         }

@@ -5,7 +5,7 @@
     --text: #eaeaea;
     --header-background: #1e1e1e;
 
-    --orange: #ff5f72;
+    --orange: #d65d0e;
 }
 
 /* TODO add more stuff here */
@@ -32,11 +32,6 @@ main {
 
 a {
     color: var(--orange);
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
 }
 
 header a {
@@ -59,60 +54,65 @@ ul {
 }
 
 header {
+    background-color: var(--header-background);
+}
+
+#header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
-    background-color: var(--header-background);
-    border-bottom: 1px solid #333;
+    padding: 20px;
+}
+
+nav ul {
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 30px;
 }
 
 footer {
     background-color: var(--header-background);
-    color: var(--text);
     text-align: center;
-    padding: 20px;
     margin-top: 40px;
 }
 
-.logo h1 {
-    font-size: 24px;
-    color: var(--orange);
+#footer-text {
+    padding-top: 5px;
+    padding-bottom: 15px;
 }
 
-nav {
-    display: flex;
-    gap: 20px;
+#logo {
+    font-size: 24px;
+    color: var(--orange);
+    text-decoration: none;
+}
+
+#logo:hover {
+    text-decoration: underline;
 }
 
 .nav-item {
     padding: 10px 20px;
     font-size: 16px;
+    border: 2px solid var(--orange);
     border-radius: 5px;
-    transition: all 0.3s ease;
-}
-
-.nav-item.active {
-    background-color: var(--orange);
-    color: #FFFFFF;
 }
 
 .nav-item:hover {
-    background-color: #E64A19;
-    color: #FFFFFF;
+    background-color: var(--orange);
 }
 
 .logout-button {
-    font-size: 16px;
     padding: 10px 15px;
-    border: 1px solid var(--orange);
+    font-size: 16px;
+    border: 2px solid var(--orange);
     border-radius: 5px;
-    transition: all 0.3s ease;
 }
 
 .logout-button:hover {
     background-color: var(--orange);
-    color: #FFFFFF;
 }
 
 .section-title {
