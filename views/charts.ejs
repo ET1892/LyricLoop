@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="en-IE">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <%- include("partials/metadata.html") -%>
 
         <title>Charts | Lyric Loop</title>
-
-        <link rel="stylesheet" href="/css/main.css" type="text/css">
     </head>
     <body>
         <%- include("partials/header.html") -%>
@@ -14,16 +11,21 @@
         <main>
             <h1 class="section-title">Top 10 Songs</h1>
 
-            <ul class="chart-list">
+            <ul class="featured-list">
                 <% chartData.forEach((item, index) => { %>
-                    <li>
-                        <img src="<%= item.image %>" alt="<%= item.artist %>" loading="lazy">
+                    <li class="featured-item">
+                        <img src="<%= item.image %>" alt="Image of <%= item.artist %>" class="featured-image" loading="lazy">
 
-                        <div class="song-info">
-                            <h3 class="song-title"><%= index + 1 %>. <%= item.track %></h3>
+                        <div class="info">
+                            <!-- <h3 class="song-title"><%= index + 1 %>. <%= item.track %></h3> -->
+                            <h2 class="name"><%= index + 1 %>. <%= item.track %></h2>
 
-                            <p class="artist-name">by <%= item.artist %></p>
-                            <p class="listeners"><b>Listeners:</b> <%= item.listeners %></p>
+                            <!-- <p class="artist-name">by <%= item.artist %></p> -->
+                            <!-- <p class="listeners"><b>Listeners:</b> <%= item.listeners %></p> -->
+
+                            <!-- TODO make the artist name clickable -->
+                            <p class="details">by <%= item.artist %></p>
+                            <p class="details"><b>Listeners:</b> <%= item.listeners %></p>
                         </div>
                     </li>
                 <% }); %>

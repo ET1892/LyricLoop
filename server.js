@@ -21,7 +21,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
     .catch((err) => console.error(`Error connecting to MongoDB: ${err}`));
 
 // Routes
-app.use("/", authRoutes);
+// app.use("/", authRoutes);
 app.use(express.static("public"));
 
 // Set EJS as the view engine
@@ -30,10 +30,10 @@ app.set("view engine", "ejs");
 // Middleware to parse POST request data
 app.use(express.urlencoded({ extended: true }));
 
-// Home page
-app.get("/", (req, res) => {
-    res.render("index");
-});
+// // Home page (featured artists)
+// app.get("/", (req, res) => {
+//     res.render("index");
+// });
 
 // Signup page
 app.get("/signup", (req, res) => {
@@ -87,7 +87,7 @@ app.post("/login", async (req, res) => {
 
 // Route for the search page (GET)
 app.get("/search", (req, res) => {
-    res.render("index");
+    res.render("search");
 });
 
 // Route for handling search (POST)
@@ -121,11 +121,11 @@ app.post("/search", async (req, res) => {
     res.render("results", { results });
 });
 
-app.get("/featured", async (req, res) => {
+app.get("/", async (req, res) => {
     const featuredData = await api.getFeaturedArtists();
 
     if (featuredData.length > 0) {
-        res.render("featured", { featuredData });
+        res.render("index", { featuredData });
     } else {
         res.status(500).send("Error loading featured page.");
     }

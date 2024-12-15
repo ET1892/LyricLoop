@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en-IE">
+    <head>
+        <%- include("partials/metadata.html") -%>
+
+        <!-- TODO add the artist name to this -->
+        <title>Search Results | Lyric Loop</title>
+        <!-- <title><%= result.artistInfo.name %> | Lyric Loop</title> -->
+    </head>
+
+    <body>
+        <%- include("partials/header.html") -%>
+
+        <main>
+            <div class="artist-details">
+                <h1><%= result.artistInfo.name %></h1>
+
+                <% if (result.artistInfo.image) { %>
+                    <img src="<%= result.artistInfo.image %>" alt="Image of <%= result.artistInfo.name %>" loading="lazy">
+                <% } %>
+
+                <h3>Biography</h3>
+                <p><%= result.artistInfo?.bio || "Biography not available." %></p>
+
+                <h3>Similar Artists</h3>
+                <p><%= result.artistInfo?.similarArtists || "No similar artists found." %></p>
+            </div>
+
+            <div class="songs-list">
+                <h3>Songs</h3>
+
+                <ul>
+                    <% songs.forEach(song => { %>
+                        <li><% song.title %></li>
+                    <% } %>
+                </ul>
+            </div>
+        </main>
+
+        <%- include("partials/footer.html") -%>
+    </body>
+</html>

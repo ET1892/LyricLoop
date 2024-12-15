@@ -29,6 +29,3 @@
 ## 🔀 misc
 
 - Reorganise everything into `backend/` and `frontend/`
-- Add metadata partial, and pass the page title as an argument?
-    - e.g. "Featured" -> `Featured | Lyric Loop`
-- Add a favicon?
