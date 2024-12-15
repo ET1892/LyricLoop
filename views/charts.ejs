@@ -14,7 +14,12 @@
             <ul class="featured-list">
                 <% chartData.forEach((item, index) => { %>
                     <li class="featured-item">
-                        <img src="<%= item.image %>" alt="Image of <%= item.artist %>" class="featured-image" loading="lazy">
+                        <img
+                            src="<%= item.image %>"
+                            alt="Image of <%= item.artist %>"
+                            class="featured-image"
+                            loading="lazy"
+                        >
 
                         <div class="info">
                             <!-- <h3 class="song-title"><%= index + 1 %>. <%= item.track %></h3> -->

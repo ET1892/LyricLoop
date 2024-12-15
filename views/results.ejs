@@ -21,11 +21,16 @@
                     <% results.forEach(result => { %>
                         <li class="featured-item">
                             <% if (result.image) { %>
-                                <img src="<%= result.image %>" alt="Image of <%= result.artist %>" class="featured-image" loading="lazy">
+                                <img
+                                    src="<%= result.image %>"
+                                    alt="Album cover for '<%= result.title %>' by <%= result.artist %>"
+                                    class="featured-image"
+                                    loading="lazy"
+                                >
                             <% } %>
 
                             <div class="info">
-                                <h2 class="name"><%= result.track || "Unknown Track" %></h2>
+                                <h2 class="name"><%= result.title || "Unknown Track" %></h2>
 
                                 <p class="details">by <%= result.artist || "Unknown Artist" %></p>
                             </div>

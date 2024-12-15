@@ -45,6 +45,7 @@ app.get("/login", (req, res) => {
     res.render("login");
 });
 
+// Render the charts page
 app.get("/charts", async (req, res) => {
     try {
         const chartData = await api.getChartData();
@@ -85,43 +86,22 @@ app.post("/login", async (req, res) => {
     }
 });
 
-// Route for the search page (GET)
+// Render the search page
 app.get("/search", (req, res) => {
     res.render("search");
 });
 
-// Route for handling search (POST)
+// Get the search results from Genius
 app.post("/search", async (req, res) => {
     const searchQuery = req.body.search_query;
-    const tracks = await api.searchLastFmTracks(searchQuery); // Fetch Last.fm tracks
-    const results = [];
+    const results = await api.getInfoFromGenius(searchQuery);
 
-    for (const track of tracks) {
-        // Fetch artist info
-        const artistInfo = await api.getArtistInfo(track.artist);
-
-        // // Fetch lyrics
-        // const lyrics = await api.getLyricsFromGenius(track.name, track.artist);
-
-        // // Fetch YouTube video URL
-        // const youtubeVideo = await api.getYouTubeVideo(track.name, track.artist);
-
-        results.push({
-            track: track.name,
-            artist: track.artist,
-            // url: track.url, // Last.fm track URL
-            // lyrics,
-            image: artistInfo.image,
-            // youtubeVideo, // YouTube video URL
-        });
-    }
-
-    // console.log("Finished getting lyrics from Genius");
     console.log("Finished getting search results");
 
     res.render("results", { results });
 });
 
+// Render the homepage (featured artists)
 app.get("/", async (req, res) => {
     const featuredData = await api.getFeaturedArtists();
 

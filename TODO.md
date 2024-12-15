@@ -27,4 +27,5 @@
 
 ## 🔀 misc
 
+- Add a README
 - Reorganise everything into `backend/` and `frontend/`

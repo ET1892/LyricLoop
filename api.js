@@ -3,6 +3,39 @@ require("dotenv").config();
 const axios = require("axios");
 const cheerio = require("cheerio");
 
+// Get search results from Genius
+async function getInfoFromGenius(searchQuery) {
+    const geniusSearchUrl = `https://api.genius.com/search?q=${encodeURIComponent(searchQuery)}`;
+
+    const headers = {
+        Authorization: `Bearer ${process.env.GENIUS_ACCESS_TOKEN}`,
+    };
+
+    const results = [];
+
+    try {
+        const geniusResponse = await axios.get(geniusSearchUrl, { headers });
+        const hits = geniusResponse.data.response.hits;
+
+        for (const hit of hits) {
+            // TODO add YouTube video
+            results.push({
+                "title": hit.result.title,
+                "artist": hit.result.primary_artist.name,
+                "image": hit.result.header_image_url,
+
+                // Currently unused
+                "artistImage": hit.result.primary_artist.image_url,
+                "releaseDate": hit.result.release_date_for_display,
+            });
+        }
+    } catch (err) {
+        console.error(`Error fetching info from Genius: ${err.message}`);
+    }
+
+    return results;
+}
+
 // Get artist info from Last.fm and image from Genius
 // TODO try and get all info from one API instead?
 async function getArtistInfo(artistName) {
@@ -271,6 +304,7 @@ module.exports = {
     getArtistInfo,
     getChartData,
     getFeaturedArtists,
+    getInfoFromGenius,
     getLyricsFromGenius,
     getYouTubeVideo,
     searchLastFmTracks,
