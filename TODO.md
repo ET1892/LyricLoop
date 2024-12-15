@@ -12,7 +12,7 @@
 
 - Make similar artists clickable and have their own page
 - Properly format lyrics
-- Make images smaller / cropped
+- Download smaller images?
 - Remove YouTube API integration – get video from Genius API instead?
 - Use this? https://github.com/farshed/genius-lyrics-api
 
@@ -24,7 +24,6 @@
 - CSS: Fix input box width on login pages
 - Add encoded search parameters to /search url?
     - e.g. `localhost:3000/search?q=kendrick+lamar`
-- Change the header to a `ul` and wrap it on mobile?
 
 ## 🔀 misc
 

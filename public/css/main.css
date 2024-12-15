@@ -55,21 +55,39 @@ ul {
 
 header {
     background-color: var(--header-background);
+    text-align: center;
 }
 
 #header-content {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 20px;
 }
 
+header h1 a {
+    color: var(--orange);
+    text-decoration: none;
+}
+
+header h1 a:hover {
+    text-decoration: underline;
+}
+
 nav ul {
     display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 nav ul li {
-    margin-right: 30px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    border: 2px solid var(--orange);
+    border-radius: 5px;
+}
+
+nav ul li:hover {
+    background-color: var(--orange);
 }
 
 footer {
@@ -81,38 +99,6 @@ footer {
 #footer-text {
     padding-top: 5px;
     padding-bottom: 15px;
-}
-
-#logo {
-    font-size: 24px;
-    color: var(--orange);
-    text-decoration: none;
-}
-
-#logo:hover {
-    text-decoration: underline;
-}
-
-.nav-item {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: 2px solid var(--orange);
-    border-radius: 5px;
-}
-
-.nav-item:hover {
-    background-color: var(--orange);
-}
-
-.logout-button {
-    padding: 10px 15px;
-    font-size: 16px;
-    border: 2px solid var(--orange);
-    border-radius: 5px;
-}
-
-.logout-button:hover {
-    background-color: var(--orange);
 }
 
 .section-title {

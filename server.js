@@ -100,8 +100,8 @@ app.post("/search", async (req, res) => {
         // Fetch artist info
         const artistInfo = await api.getArtistInfo(track.artist);
 
-        // Fetch lyrics
-        const lyrics = await api.getLyricsFromGenius(track.name, track.artist);
+        // // Fetch lyrics
+        // const lyrics = await api.getLyricsFromGenius(track.name, track.artist);
 
         // // Fetch YouTube video URL
         // const youtubeVideo = await api.getYouTubeVideo(track.name, track.artist);
@@ -110,13 +110,14 @@ app.post("/search", async (req, res) => {
             track: track.name,
             artist: track.artist,
             // url: track.url, // Last.fm track URL
-            lyrics,
-            artistInfo,
+            // lyrics,
+            image: artistInfo.image,
             // youtubeVideo, // YouTube video URL
         });
     }
 
-    console.log("Finished getting lyrics from Genius");
+    // console.log("Finished getting lyrics from Genius");
+    console.log("Finished getting search results");
 
     res.render("results", { results });
 });

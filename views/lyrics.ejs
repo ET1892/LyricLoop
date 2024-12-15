@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en-IE">
+    <head>
+        <%- include("partials/metadata.html") -%>
+
+        <!-- TODO add the song name -->
+        <title>Song Lyrics | Lyric Loop</title>
+    </head>
+
+    <body>
+        <%- include("partials/header.html") -%>
+
+        <main>
+            <!-- TODO replace this -->
+            <h1 class="section-title">"Song" by Artist</h1>
+
+            <ul class="results-list">
+                <% if (result.youtubeVideo) { %>
+                    <iframe
+                        width="560"
+                        height="315"
+                        src="<%= result.youtubeVideo %>"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                    ></iframe>
+                <% } else { %>
+                    <p>Music video not available.</p>
+                <% } %>
+
+                <h3>Lyrics</h3>
+                <div class="lyrics">
+                    <%= result.lyrics || "Lyrics not found for this song." %>
+                </div>
+            </ul>
+        </main>
+
+        <%- include("partials/footer.html") -%>
+    </body>
+</html>

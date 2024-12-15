@@ -6,7 +6,7 @@ const cheerio = require("cheerio");
 // Get artist info from Last.fm and image from Genius
 // TODO try and get all info from one API instead?
 async function getArtistInfo(artistName) {
-    const GENIUS_SEARCH_URL = `https://api.genius.com/search?q=${encodeURIComponent(artistName)}`;
+    const geniusSearchUrl = `https://api.genius.com/search?q=${encodeURIComponent(artistName)}`;
 
     let lastfmUrl = `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(artistName)}`
     lastfmUrl += `&api_key=${process.env.LAST_FM_API_KEY}&format=json`;
@@ -21,26 +21,32 @@ async function getArtistInfo(artistName) {
         const artistInfo = lastFmResponse.data.artist;
 
         // Fetch artist image from Genius
-        const geniusResponse = await axios.get(GENIUS_SEARCH_URL, { headers });
+        const geniusResponse = await axios.get(geniusSearchUrl, { headers });
         const hits = geniusResponse.data.response.hits;
 
-        let geniusImage = "";
+        let artistImage = "";
 
         for (const hit of hits) {
             if (
                 hit.result.primary_artist &&
                 hit.result.primary_artist.name.toLowerCase() === artistName.toLowerCase()
             ) {
-                geniusImage = hit.result.primary_artist.image_url;
+                artistImage = hit.result.primary_artist.image_url;
                 break;
             }
+        }
+
+        if (artistImage !== "") {
+            console.log(`Genius: Got image for ${artistInfo.name}`);
+        } else {
+            console.log(`Genius: Couldn't find image for ${artistInfo.name}`);
         }
 
         return {
             name: artistInfo.name,
             bio: artistInfo.bio.summary.replace(/<a.*?>.*?<\/a>/g, ""),
             similarArtists: artistInfo.similar.artist.map((a) => a.name).join(", "),
-            image: geniusImage,
+            image: artistImage,
         };
     } catch (err) {
         console.error(`Error fetching artist info: ${err.message}`);
@@ -103,13 +109,13 @@ async function getYouTubeVideo(track, artist) {
     }
 }
 
-// function cleanLyrics(lyrics) {
-//     // Add a space before uppercase letters that follow a lowercase letter or a
-//     // punctuation mark
-//     return lyrics
-//         .replace(/([a-z])([A-Z])/g, "$1 $2")
-//         .replace(/([.,!?])([A-Za-z])/g, "$1 $2");
-// }
+function cleanLyrics(lyrics) {
+    // Add a space before uppercase letters that follow a lowercase letter or a
+    // punctuation mark
+    return lyrics
+        .replace(/([a-z])([A-Z])/g, "$1 $2")
+        .replace(/([.,!?])([A-Za-z])/g, "$1 $2");
+}
 
 // Scrape the lyrics from Genius (since they're not in the API for some reason)
 async function getLyricsFromGenius(songName, artistName) {
@@ -140,13 +146,9 @@ async function getLyricsFromGenius(songName, artistName) {
                     .get()
                     .join("\n");
 
-                // return cleanLyrics(rawLyrics);
-
                 console.log(`Genius: Got lyrics for ${result.path}`);
 
-                return rawLyrics
-                    .replace(/([a-z])([A-Z])/g, "$1 $2")
-                    .replace(/([.,!?])([A-Za-z])/g, "$1 $2");
+                return cleanLyrics(rawLyrics);
             }
         }
 

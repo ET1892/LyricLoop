@@ -17,44 +17,50 @@
             <% if (results.length === 0) { %>
                 <p>No results found for your search. Try a different query.</p>
             <% } else { %>
-                <ul class="results-list">
+                <ul class="featured-list">
                     <% results.forEach(result => { %>
-                        <li class="result-item">
-                            <hr>
-
-                            <h2>"<%= result.track || "Unknown Track" %>" by <%= result.artist || "Unknown Artist" %></h2>
-
-                            <% if (result.youtubeVideo) { %>
-                                <iframe
-                                    width="560"
-                                    height="315"
-                                    src="<%= result.youtubeVideo %>"
-                                    frameborder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen
-                                ></iframe>
-                            <% } else { %>
-                                <p>Music video not available.</p>
+                        <li class="featured-item">
+                            <% if (result.image) { %>
+                                <img src="<%= result.image %>" alt="Image of <%= result.artist %>" class="featured-image" loading="lazy">
                             <% } %>
 
-                            <h3>Lyrics</h3>
-                            <div class="lyrics">
-                                <%= result.lyrics || "Lyrics not found for this song." %>
+                            <div class="info">
+                                <h2 class="name"><%= result.track || "Unknown Track" %></h2>
+
+                                <p class="details">by <%= result.artist || "Unknown Artist" %></p>
                             </div>
 
-                            <div class="artist-details">
-                                <h2><%= result.artistInfo?.name || "N/A" %></h2>
+                            <!-- <% if (result.youtubeVideo) { %> -->
+                            <!--     <iframe -->
+                            <!--         width="560" -->
+                            <!--         height="315" -->
+                            <!--         src="<%= result.youtubeVideo %>" -->
+                            <!--         frameborder="0" -->
+                            <!--         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" -->
+                            <!--         allowfullscreen -->
+                            <!--     ></iframe> -->
+                            <!-- <% } else { %> -->
+                            <!--     <p>Music video not available.</p> -->
+                            <!-- <% } %> -->
 
-                                <% if (result.artistInfo?.image) { %>
-                                    <img src="<%= result.artistInfo.image %>" alt="Image of <%= result.artistInfo.name %>" loading="lazy">
-                                <% } %>
+                            <!-- <h3>Lyrics</h3> -->
+                            <!-- <div class="lyrics"> -->
+                            <!--     <%= result.lyrics || "Lyrics not found for this song." %> -->
+                            <!-- </div> -->
 
-                                <h3>Biography</h3>
-                                <p><%= result.artistInfo?.bio || "Biography not available." %></p>
+                            <!-- <div class="artist-details"> -->
+                            <!--     <h2><%= result.artistInfo?.name || "N/A" %></h2> -->
 
-                                <h3>Similar Artists</h3>
-                                <p><%= result.artistInfo?.similarArtists || "No similar artists found." %></p>
-                            </div>
+                            <!--     <% if (result.artistInfo?.image) { %> -->
+                            <!--         <img src="<%= result.artistInfo.image %>" alt="Image of <%= result.artistInfo.name %>" loading="lazy"> -->
+                            <!--     <% } %> -->
+
+                            <!--     <h3>Biography</h3> -->
+                            <!--     <p><%= result.artistInfo?.bio || "Biography not available." %></p> -->
+
+                            <!--     <h3>Similar Artists</h3> -->
+                            <!--     <p><%= result.artistInfo?.similarArtists || "No similar artists found." %></p> -->
+                            <!-- </div> -->
                         </li>
                     <% }); %>
                 </ul>
