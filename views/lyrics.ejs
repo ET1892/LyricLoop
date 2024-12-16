@@ -3,36 +3,43 @@
     <head>
         <%- include("partials/metadata.html") -%>
 
-        <!-- TODO add the song name -->
-        <title>Song Lyrics | Lyric Loop</title>
+        <title><%= data.artist %> – <%= data.title %> Lyrics | Lyric Loop</title>
     </head>
 
     <body>
         <%- include("partials/header.html") -%>
 
         <main>
-            <!-- TODO replace this -->
-            <h1 class="section-title">"Song" by Artist</h1>
+            <h1 class="section-title"><%= data.artist %> &ndash; <%= data.title %></h1>
 
-            <ul class="results-list">
-                <% if (result.youtubeVideo) { %>
-                    <iframe
-                        width="560"
-                        height="315"
-                        src="<%= result.youtubeVideo %>"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                    ></iframe>
-                <% } else { %>
-                    <p>Music video not available.</p>
-                <% } %>
+            <% if (data.youtubeVideo) { %>
+                <iframe
+                    width="560"
+                    height="315"
+                    src="<%= data.youtubeVideo %>"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                ></iframe>
+            <% } else { %>
+                <p>Music video not available.</p>
+            <% } %>
 
-                <h3>Lyrics</h3>
-                <div class="lyrics">
-                    <%= result.lyrics || "Lyrics not found for this song." %>
-                </div>
-            </ul>
+            <h2>Lyrics</h2>
+            <div class="lyrics">
+                <%- data.lyrics || "Lyrics not found." %>
+            </div>
+
+            <!-- TODO add album cover, release date, etc -->
+            <h2>Info</h2>
+                <img
+                    src="<%= data.image %>"
+                    alt="Album cover for '<%= data.title %>' by <%= data.artist %>"
+                    loading="lazy"
+                >
+
+                <h3><%= data.artist %> &ndash; <%= data.title %></h3>
+                <p><b>Release Date:</b> <%= data.releaseDate %></p>
         </main>
 
         <%- include("partials/footer.html") -%>

@@ -119,6 +119,7 @@ footer {
     align-items: center;
     margin: 20px 0;
     background-color: var(--header-background);
+    border: 2px solid var(--orange);
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);

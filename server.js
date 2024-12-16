@@ -101,6 +101,31 @@ app.post("/search", async (req, res) => {
     res.render("results", { results });
 });
 
+// Render the lyrics page
+app.get("/lyrics", async (req, res) => {
+    // Just a hardcoded example for now, will make this match whichever result
+    // the user clicks on later
+    const geniusInfo = await api.getInfoFromGenius("etched headplate");
+    const song = geniusInfo[0];
+
+    const lyrics = await api.getLyricsFromGenius(song.lyricsPath);
+    const youtubeVideo = await song.youtubeVideo();
+
+    const data = {
+        "title": song.title,
+        "artist": song.artist,
+        "lyrics": lyrics,
+        "image": song.image,
+        "releaseDate": song.releaseDate,
+        "youtubeVideo": youtubeVideo,
+    };
+
+    console.log(data.releaseDate);
+    console.log(data.image);
+
+    res.render("lyrics", { data });
+});
+
 // Render the homepage (featured artists)
 app.get("/", async (req, res) => {
     const featuredData = await api.getFeaturedArtists();

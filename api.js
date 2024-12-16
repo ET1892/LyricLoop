@@ -3,7 +3,7 @@ require("dotenv").config();
 const axios = require("axios");
 const cheerio = require("cheerio");
 
-// Get search results from Genius
+// Get song and artist info from Genius
 async function getInfoFromGenius(searchQuery) {
     const geniusSearchUrl = `https://api.genius.com/search?q=${encodeURIComponent(searchQuery)}`;
 
@@ -18,15 +18,44 @@ async function getInfoFromGenius(searchQuery) {
         const hits = geniusResponse.data.response.hits;
 
         for (const hit of hits) {
-            // TODO add YouTube video
             results.push({
                 "title": hit.result.title,
                 "artist": hit.result.primary_artist.name,
                 "image": hit.result.header_image_url,
+                "id": hit.result.id,
+                "lyricsPath": hit.result.path,
 
-                // Currently unused
                 "artistImage": hit.result.primary_artist.image_url,
                 "releaseDate": hit.result.release_date_for_display,
+
+                "youtubeVideo": async () => {
+                    console.log("Calling youtubeVideo");
+
+                    // Get the page for the current song, using its ID
+                    const songResponse = await axios.get(
+                        `https://api.genius.com/songs/${hit.result.id}`,
+                        { headers },
+                    );
+
+                    const media = songResponse.data.response.song.media;
+
+                    // The "media" array contains objects for YouTube, Spotify,
+                    // SoundCloud, etc. If there is a YouTube URL, return it.
+                    for (const platform of media) {
+                        if (platform.provider === "youtube") {
+                            console.log(`Found YouTube video: ${platform.url}`);
+
+                            // Example URL: get the ID at the end
+                            // https://www.youtube.com/watch?v=St-mEIhvKOI
+                            const splitUrl = platform.url.split("?v=");
+                            const videoId = splitUrl[splitUrl.length - 1];
+
+                            return `https://www.youtube-nocookie.com/embed/${videoId}`;
+                        }
+                    }
+
+                    return "";
+                },
             });
         }
     } catch (err) {
@@ -34,6 +63,38 @@ async function getInfoFromGenius(searchQuery) {
     }
 
     return results;
+}
+
+// Scrape the lyrics from Genius (since they're not in the API for some reason)
+async function getLyricsFromGenius(lyricsPath) {
+    const lyricsPage = `https://genius.com${lyricsPath}`;
+    console.log(lyricsPage);
+
+    try {
+        const response = await axios.get(lyricsPage);
+        const $ = cheerio.load(response.data);
+
+        const lyricsDivs = $('[data-lyrics-container="true"]');
+
+        const lyrics = lyricsDivs
+            .map((i, el) => {
+                return $(el)
+                    .html()
+                    .replace(/<br\s*\/?>/g, "\n")
+                    .replace(/<\/?[^>]+(>|$)/g, "")
+                    .trim();
+            })
+            .get()
+            .join("\n\n");
+
+        console.log(`Genius: Got lyrics for ${lyricsPath}`);
+        console.log(lyrics);
+
+        return lyrics.replace(/\n/g, "<br>");
+    } catch (err) {
+        console.error(`Error fetching lyrics from Genius: ${err.message}`);
+        return "Error fetching lyrics.";
+    }
 }
 
 // Get artist info from Last.fm and image from Genius
@@ -93,105 +154,6 @@ async function getArtistInfo(artistName) {
     }
 }
 
-// Search tracks on Last.fm
-async function searchLastFmTracks(query) {
-    let url = `https://ws.audioscrobbler.com/2.0/?method=track.search&track=${encodeURIComponent(query)}`;
-    url += `&api_key=${process.env.LAST_FM_API_KEY}&format=json&limit=10`;
-
-    try {
-        const response = await axios.get(url);
-        const tracks = response.data.results.trackmatches.track;
-
-        tracks.forEach((track) => {
-            console.log(`Track: "${track.name}" by ${track.artist}`);
-        });
-
-        return tracks.map((track) => ({
-            name: track.name,
-            artist: track.artist,
-            // url: track.url,
-        }));
-    } catch (err) {
-        console.error(`Error fetching data from Last.fm: ${err.message}`);
-        return [];
-    }
-}
-
-// TODO Remove the YouTube API and get this from the Genius one instead
-async function getYouTubeVideo(track, artist) {
-    const searchQuery = `${track} ${artist}`;
-
-    let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1`;
-    url += `&q=${encodeURIComponent(searchQuery)}&key=${process.env.YOUTUBE_API_KEY}`;
-
-    try {
-        const response = await axios.get(url);
-        const items = response.data.items;
-
-        if (items.length > 0) {
-            console.log(`YouTube: found video for ${artist} - ${track}`);
-
-            return `https://www.youtube.com/embed/${items[0].id.videoId}`;
-        }
-
-        console.log(`YouTube: no video for ${artist} - ${track}`);
-        return null;
-    } catch (err) {
-        console.error(`Error fetching YouTube video: ${err.message}`);
-        return null;
-    }
-}
-
-function cleanLyrics(lyrics) {
-    // Add a space before uppercase letters that follow a lowercase letter or a
-    // punctuation mark
-    return lyrics
-        .replace(/([a-z])([A-Z])/g, "$1 $2")
-        .replace(/([.,!?])([A-Za-z])/g, "$1 $2");
-}
-
-// Scrape the lyrics from Genius (since they're not in the API for some reason)
-async function getLyricsFromGenius(songName, artistName) {
-    // TODO encode this
-    const searchUrl = `https://api.genius.com/search?q=${songName} ${artistName}`;
-
-    const headers = {
-        Authorization: `Bearer ${process.env.GENIUS_ACCESS_TOKEN}`,
-    };
-
-    try {
-        const response = await axios.get(searchUrl, { headers });
-        const hits = response.data.response.hits;
-
-        for (const hit of hits) {
-            const result = hit.result;
-
-            if (artistName.toLowerCase() === result.primary_artist.name.toLowerCase()) {
-                const lyricsUrl = `https://genius.com${result.path}`;
-                const lyricsPage = await axios.get(lyricsUrl);
-                const $ = cheerio.load(lyricsPage.data);
-
-                // Extract and clean the lyrics
-                const lyricsDiv = $(".Lyrics__Container-sc-1ynbvzw-1");
-
-                const rawLyrics = lyricsDiv
-                    .map((i, el) => $(el).text().trim()) // Extract text and trim extra spaces
-                    .get()
-                    .join("\n");
-
-                console.log(`Genius: Got lyrics for ${result.path}`);
-
-                return cleanLyrics(rawLyrics);
-            }
-        }
-
-        return "Lyrics not found.";
-    } catch (err) {
-        console.error(`Error fetching lyrics from Genius: ${err.message}`);
-        return "Error fetching lyrics.";
-    }
-}
-
 // Get featured artists from Last.fm
 async function getFeaturedArtists() {
     const headers = {
@@ -242,9 +204,9 @@ async function getFeaturedArtists() {
 }
 
 // Get the charts from Last.fm
-async function getChartData(limit = 10) {
+async function getChartData() {
     let lastfmUrl = `https://ws.audioscrobbler.com/2.0/?method=chart.getTopTracks`;
-    lastfmUrl += `&api_key=${process.env.LAST_FM_API_KEY}&format=json&limit=${limit}`;
+    lastfmUrl += `&api_key=${process.env.LAST_FM_API_KEY}&format=json&limit=10`;
 
     const headers = {
         Authorization: `Bearer ${process.env.GENIUS_ACCESS_TOKEN}`,
@@ -306,6 +268,4 @@ module.exports = {
     getFeaturedArtists,
     getInfoFromGenius,
     getLyricsFromGenius,
-    getYouTubeVideo,
-    searchLastFmTracks,
 };

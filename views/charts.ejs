@@ -11,7 +11,7 @@
         <main>
             <h1 class="section-title">Top 10 Songs</h1>
 
-            <ul class="featured-list">
+            <ol class="featured-list">
                 <% chartData.forEach((item, index) => { %>
                     <li class="featured-item">
                         <img
@@ -34,7 +34,7 @@
                         </div>
                     </li>
                 <% }); %>
-            </ul>
+            </ol>
         </main>
 
         <%- include("partials/footer.html") -%>
