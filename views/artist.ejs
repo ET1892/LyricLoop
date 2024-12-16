@@ -3,38 +3,41 @@
     <head>
         <%- include("partials/metadata.html") -%>
 
-        <!-- TODO add the artist name to this -->
-        <title>Search Results | Lyric Loop</title>
-        <!-- <title><%= result.artistInfo.name %> | Lyric Loop</title> -->
+        <title><%= artistInfo.name %> | Lyric Loop</title>
     </head>
 
     <body>
         <%- include("partials/header.html") -%>
 
         <main>
-            <div class="artist-details">
-                <h1><%= result.artistInfo.name %></h1>
+            <h1><%= artistInfo.name %></h1>
 
-                <% if (result.artistInfo.image) { %>
-                    <img src="<%= result.artistInfo.image %>" alt="Image of <%= result.artistInfo.name %>" loading="lazy">
-                <% } %>
+            <% if (artistInfo.image) { %>
+                <img src="<%= artistInfo.image %>" alt="Image of <%= artistInfo.name %>" loading="lazy">
+            <% } else { %>
+                <p>Artist image not available.</p>
+            <% } %>
 
-                <h3>Biography</h3>
-                <p><%= result.artistInfo?.bio || "Biography not available." %></p>
+            <h2>Biography</h2>
+            <p><%= artistInfo.bio || "Biography not available." %></p>
 
-                <h3>Similar Artists</h3>
-                <p><%= result.artistInfo?.similarArtists || "No similar artists found." %></p>
-            </div>
+            <!-- TODO make these clickable -->
+            <h2>Similar Artists</h2>
+            <p><%= artistInfo.similarArtists || "No similar artists found." %></p>
 
-            <div class="songs-list">
-                <h3>Songs</h3>
+            <h2>Top 10 Songs</h2>
+            <ol class="featured-list">
+                <% artistInfo.topTracks.forEach((track, index) => { %>
+                    <li class="featured-item">
+                        <!-- TODO add album covers -->
 
-                <ul>
-                    <% songs.forEach(song => { %>
-                        <li><% song.title %></li>
-                    <% } %>
-                </ul>
-            </div>
+                        <div class="info">
+                            <h2 class="name"><%= index + 1 %>. <%= track.name %></h2>
+                            <p class="details"><b>Listeners:</b> <%= Number(track.listeners).toLocaleString() %></p>
+                        </div>
+                    </li>
+                <% }); %>
+            </ol>
         </main>
 
         <%- include("partials/footer.html") -%>

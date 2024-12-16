@@ -98,12 +98,18 @@ async function getLyricsFromGenius(lyricsPath) {
 }
 
 // Get artist info from Last.fm and image from Genius
-// TODO try and get all info from one API instead?
 async function getArtistInfo(artistName) {
-    const geniusSearchUrl = `https://api.genius.com/search?q=${encodeURIComponent(artistName)}`;
-
-    let lastfmUrl = `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(artistName)}`
+    // Get the artist info from Last.fm
+    let lastfmUrl = `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(artistName)}`;
     lastfmUrl += `&api_key=${process.env.LAST_FM_API_KEY}&format=json`;
+
+    // Get the artist's top 10 songs from Last.fm
+    let tracksUrl = `https://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=${encodeURIComponent(artistName)}`;
+    tracksUrl += `&api_key=${process.env.LAST_FM_API_KEY}&format=json&limit=10`;
+
+    // For getting the artist's image from Genius (because they removed this
+    // from the Last.fm API for some reason)
+    const geniusSearchUrl = `https://api.genius.com/search?q=${encodeURIComponent(artistName)}`;
 
     const headers = {
         Authorization: `Bearer ${process.env.GENIUS_ACCESS_TOKEN}`,
@@ -113,6 +119,9 @@ async function getArtistInfo(artistName) {
         // Fetch artist info from Last.fm
         const lastFmResponse = await axios.get(lastfmUrl);
         const artistInfo = lastFmResponse.data.artist;
+
+        const tracksResponse = await axios.get(tracksUrl);
+        const topTracks = tracksResponse.data.toptracks.track;
 
         // Fetch artist image from Genius
         const geniusResponse = await axios.get(geniusSearchUrl, { headers });
@@ -130,7 +139,7 @@ async function getArtistInfo(artistName) {
             }
         }
 
-        if (artistImage !== "") {
+        if (artistImage) {
             console.log(`Genius: Got image for ${artistInfo.name}`);
         } else {
             console.log(`Genius: Couldn't find image for ${artistInfo.name}`);
@@ -140,6 +149,7 @@ async function getArtistInfo(artistName) {
             name: artistInfo.name,
             bio: artistInfo.bio.summary.replace(/<a.*?>.*?<\/a>/g, ""),
             similarArtists: artistInfo.similar.artist.map((a) => a.name).join(", "),
+            topTracks: topTracks,
             image: artistImage,
         };
     } catch (err) {
@@ -149,6 +159,9 @@ async function getArtistInfo(artistName) {
             name: artistName,
             bio: "Biography not available.",
             similarArtists: "No similar artists found.",
+            topTracks: [],
+
+            // TODO replace this
             image: "/path/to/default-image.png",
         };
     }
@@ -183,7 +196,7 @@ async function getFeaturedArtists() {
                 artistImage = hits[0].result.primary_artist.image_url;
             }
 
-            if (artistImage !== "") {
+            if (artistImage) {
                 console.log(`Genius: Featured image for ${artist.name}`);
             }
 

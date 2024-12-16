@@ -30,16 +30,19 @@
                 <%- data.lyrics || "Lyrics not found." %>
             </div>
 
-            <!-- TODO add album cover, release date, etc -->
             <h2>Info</h2>
+            <% if (data.image) { %>
                 <img
                     src="<%= data.image %>"
                     alt="Album cover for '<%= data.title %>' by <%= data.artist %>"
                     loading="lazy"
                 >
+            <% } else { %>
+                <p>Album cover not available.</p>
+            <% } %>
 
-                <h3><%= data.artist %> &ndash; <%= data.title %></h3>
-                <p><b>Release Date:</b> <%= data.releaseDate %></p>
+            <h3><%= data.artist %> &ndash; <%= data.title %></h3>
+            <p><b>Release Date:</b> <%= data.releaseDate %></p>
         </main>
 
         <%- include("partials/footer.html") -%>

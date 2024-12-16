@@ -126,6 +126,14 @@ app.get("/lyrics", async (req, res) => {
     res.render("lyrics", { data });
 });
 
+// Render the artist page
+app.get("/artist", async (req, res) => {
+    // Again, another hardcoded example just for now
+    const artistInfo = await api.getArtistInfo("autechre");
+
+    res.render("artist", { artistInfo });
+});
+
 // Render the homepage (featured artists)
 app.get("/", async (req, res) => {
     const featuredData = await api.getFeaturedArtists();
