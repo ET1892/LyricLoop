@@ -116,14 +116,15 @@ async function getArtistInfo(artistName) {
     };
 
     try {
-        // Fetch artist info from Last.fm
+        // Get artist info from Last.fm
         const lastFmResponse = await axios.get(lastfmUrl);
         const artistInfo = lastFmResponse.data.artist;
 
+        // Get top 10 songs from Last.fm
         const tracksResponse = await axios.get(tracksUrl);
         const topTracks = tracksResponse.data.toptracks.track;
 
-        // Fetch artist image from Genius
+        // Get artist image from Genius
         const geniusResponse = await axios.get(geniusSearchUrl, { headers });
         const hits = geniusResponse.data.response.hits;
 

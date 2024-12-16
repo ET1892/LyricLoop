@@ -2,7 +2,7 @@
 
 ## 🌟 features
 
-- `localhost:3000/{artist-name}/`
+- `localhost:3000/artist/{artist-name}/`
 - `localhost:3000/{artist-name}-{song-name}-lyrics/`
 
 - Prevent requests for duplicate images in charts and results
