@@ -29,8 +29,6 @@ async function getInfoFromGenius(searchQuery) {
                 "releaseDate": hit.result.release_date_for_display,
 
                 "youtubeVideo": async () => {
-                    console.log("Calling youtubeVideo");
-
                     // Get the page for the current song, using its ID
                     const songResponse = await axios.get(
                         `https://api.genius.com/songs/${hit.result.id}`,
@@ -88,7 +86,6 @@ async function getLyricsFromGenius(lyricsPath) {
             .join("\n\n");
 
         console.log(`Genius: Got lyrics for ${lyricsPath}`);
-        console.log(lyrics);
 
         return lyrics.replace(/\n/g, "<br>");
     } catch (err) {

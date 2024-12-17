@@ -30,11 +30,6 @@ app.set("view engine", "ejs");
 // Middleware to parse POST request data
 app.use(express.urlencoded({ extended: true }));
 
-// // Home page (featured artists)
-// app.get("/", (req, res) => {
-//     res.render("index");
-// });
-
 // Signup page
 app.get("/signup", (req, res) => {
     res.render("signup");
@@ -93,37 +88,60 @@ app.get("/search", (req, res) => {
 
 // Get the search results from Genius
 app.post("/search", async (req, res) => {
-    const searchQuery = req.body.search_query;
+    const searchQuery = encodeURIComponent(req.body.search_query);
+
+    console.log(`Search: ${searchQuery}`);
+
+    res.redirect(`/results?search=${searchQuery}`);
+});
+
+// Render the results page, with the encoded search query in the URL
+app.get("/results", async (req, res) => {
+    const searchQuery = req.query.search;
     const results = await api.getInfoFromGenius(searchQuery);
 
     console.log("Finished getting search results");
 
-    res.render("results", { results });
+    res.render("results", { results, searchQuery });
 });
 
 // Render the lyrics page
 app.get("/lyrics", async (req, res) => {
-    // Just a hardcoded example for now, will make this match whichever result
-    // the user clicks on later
-    const geniusInfo = await api.getInfoFromGenius("etched headplate");
-    const song = geniusInfo[0];
+    let { artist, title } = req.query;
 
-    const lyrics = await api.getLyricsFromGenius(song.lyricsPath);
-    const youtubeVideo = await song.youtubeVideo();
+    // Remove special characters and replace whitespace with hyphens
+    artist = artist.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-");
+    title = title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-");
 
-    const data = {
-        "title": song.title,
-        "artist": song.artist,
-        "lyrics": lyrics,
-        "image": song.image,
-        "releaseDate": song.releaseDate,
-        "youtubeVideo": youtubeVideo,
-    };
+    res.redirect(`/${artist}-${title}-lyrics`);
+});
 
-    console.log(data.releaseDate);
-    console.log(data.image);
+// e.g. http://localhost:3000/kendrick-lamar-squabble-up-lyrics
+app.get("/:artist-:title-lyrics", async (req, res) => {
+    const { artist, title } = req.params;
 
-    res.render("lyrics", { data });
+    try {
+        const searchQuery = `${title.replace(/-/g, " ")} ${artist.replace(/-/g, " ")}`;
+        const geniusInfo = await api.getInfoFromGenius(searchQuery);
+
+        const song = geniusInfo[0];
+        const lyrics = await api.getLyricsFromGenius(song.lyricsPath);
+        const youtubeVideo = await song.youtubeVideo();
+
+        const data = {
+            "title": song.title,
+            "artist": song.artist,
+            "lyrics": lyrics,
+            "image": song.image,
+            "releaseDate": song.releaseDate,
+            "youtubeVideo": youtubeVideo,
+        };
+
+        res.render("lyrics", { data });
+    } catch (err) {
+        console.error(`Error fetching lyrics for ${artist} – ${title}: ${err}`);
+        res.status(500).send(`Error loading lyrics page for ${artist} – ${title}.`);
+    }
 });
 
 // Render the artist page
@@ -138,7 +156,7 @@ app.get("/artist", async (req, res) => {
 app.get("/", async (req, res) => {
     const featuredData = await api.getFeaturedArtists();
 
-    if (featuredData.length > 0) {
+    if (featuredData) {
         res.render("index", { featuredData });
     } else {
         res.status(500).send("Error loading featured page.");

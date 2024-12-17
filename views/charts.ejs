@@ -22,13 +22,12 @@
                         >
 
                         <div class="info">
-                            <!-- <h3 class="song-title"><%= index + 1 %>. <%= item.track %></h3> -->
-                            <h2 class="name"><%= index + 1 %>. <%= item.track %></h2>
+                            <h2 class="name"><%= index + 1 %>.
+                                <a href="/<%= item.artist.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-') %>-<%= item.track.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-') %>-lyrics">
+                                    <%= item.track %>
+                                </a>
+                            </h2>
 
-                            <!-- <p class="artist-name">by <%= item.artist %></p> -->
-                            <!-- <p class="listeners"><b>Listeners:</b> <%= item.listeners %></p> -->
-
-                            <!-- TODO make the artist name clickable -->
                             <p class="details">by <%= item.artist %></p>
                             <p class="details"><b>Listeners:</b> <%= item.listeners %></p>
                         </div>
