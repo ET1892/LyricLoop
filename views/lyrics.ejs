@@ -10,7 +10,10 @@
         <%- include("partials/header.html") -%>
 
         <main>
-            <h1 class="section-title"><%= data.artist %> &ndash; <%= data.title %></h1>
+            <h1 class="section-title">
+                <a href="/artist/<%= data.artist.toLowerCase().replace(/\s+/g, '-') %>"><%= data.artist %></a>
+                &ndash; <%= data.title %>
+            </h1>
 
             <% if (data.youtubeVideo) { %>
                 <iframe
@@ -41,7 +44,11 @@
                 <p>Album cover not available.</p>
             <% } %>
 
-            <h3><%= data.artist %> &ndash; <%= data.title %></h3>
+            <h3>
+                <a href="/artist/<%= data.artist.toLowerCase().replace(/\s+/g, '-') %>"><%= data.artist %></a>
+                &ndash; <%= data.title %>
+            </h3>
+
             <p><b>Release Date:</b> <%= data.releaseDate %></p>
         </main>
 

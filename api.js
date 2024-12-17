@@ -146,7 +146,7 @@ async function getArtistInfo(artistName) {
         return {
             name: artistInfo.name,
             bio: artistInfo.bio.summary.replace(/<a.*?>.*?<\/a>/g, ""),
-            similarArtists: artistInfo.similar.artist.map((a) => a.name).join(", "),
+            similarArtists: artistInfo.similar.artist.map((a) => a.name),
             topTracks: topTracks,
             image: artistImage,
         };
