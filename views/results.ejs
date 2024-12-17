@@ -31,12 +31,21 @@
 
                             <div class="info">
                                 <h2 class="name">
-                                    <a href="/<%= result.artist.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-') %>-<%= result.title.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-') %>-lyrics">
+                                    <!-- TODO find a shorter way to do this -->
+                                    <a href="/<%= result.artist.toLowerCase().replace(/\s+/g, '-') %>-<%= result.title.toLowerCase().replace(/\s+/g, '-') %>-lyrics">
                                         <%= result.title || "Unknown Track" %>
                                     </a>
                                 </h2>
 
-                                <p class="details">by <%= result.artist || "Unknown Artist" %></p>
+                                <p class="details">by
+                                    <% if (result.artist) { %>
+                                        <a href="/artist/<%= result.artist.toLowerCase().replace(/\s+/g, '-') %>">
+                                            <%= result.artist %>
+                                        </a>
+                                    <% } else { %>
+                                        "Unknown Artist"
+                                    <% } %>
+                                </p>
                             </div>
                         </li>
                     <% }); %>

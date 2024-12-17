@@ -2,12 +2,12 @@
 
 ## 🌟 features
 
-- `localhost:3000/artist/{artist-name}/`
-
 - Charts page is buggy, since the songs come from Last.fm but the lyrics etc.
 come from Genius
     - e.g. "tv off" by Kendrick Lamar on the charts redirects to a Turkish
     translation, not the original song. Searching for it works as intended.
+
+- Include search query in header and title for results page
 
 - Prevent requests for duplicate images in charts and results
     - e.g. if Kendrick Lamar has more than one song in the charts, only

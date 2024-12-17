@@ -23,7 +23,13 @@
                         >
 
                         <div class="info">
-                            <h3 class="name"><%= item.name %></h3>
+                            <h3 class="name">
+                                <% if (item.name) { %>
+                                    <a href="/artist/<%= item.name.toLowerCase().replace(/\s+/g, '-') %>"><%= item.name %></a>
+                                <% } else { %>
+                                    (Unknown Artist)
+                                <% } %>
+                            </h3>
                             <p class="details"><%= item.details %></p>
                         </div>
                     </li>

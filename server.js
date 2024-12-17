@@ -109,9 +109,8 @@ app.get("/results", async (req, res) => {
 app.get("/lyrics", async (req, res) => {
     let { artist, title } = req.query;
 
-    // Remove special characters and replace whitespace with hyphens
-    artist = artist.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-");
-    title = title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-");
+    artist = artist.toLowerCase().replace(/\s+/g, "-");
+    title = title.toLowerCase().replace(/\s+/g, "-");
 
     res.redirect(`/${artist}-${title}-lyrics`);
 });
@@ -121,7 +120,8 @@ app.get("/:artist-:title-lyrics", async (req, res) => {
     const { artist, title } = req.params;
 
     try {
-        const searchQuery = `${title.replace(/-/g, " ")} ${artist.replace(/-/g, " ")}`;
+        // const searchQuery = `${title.replace(/-/g, " ")} ${artist.replace(/-/g, " ")}`;
+        const searchQuery = `${artist} ${title}`;
         const geniusInfo = await api.getInfoFromGenius(searchQuery);
 
         const song = geniusInfo[0];
@@ -145,11 +145,19 @@ app.get("/:artist-:title-lyrics", async (req, res) => {
 });
 
 // Render the artist page
-app.get("/artist", async (req, res) => {
-    // Again, another hardcoded example just for now
-    const artistInfo = await api.getArtistInfo("autechre");
+app.get("/artist/:artistName", async (req, res) => {
+    try {
+        let artistName = req.params.artistName;
 
-    res.render("artist", { artistInfo });
+        artistName = artistName.replace(/-/g, " ");
+
+        const artistInfo = await api.getArtistInfo(artistName);
+
+        res.render("artist", { artistInfo });
+    } catch (err) {
+        console.error(`Error fetching artist page: ${err}`);
+        res.status(500).send(`Error loading artist page for ${artistName}`);
+    }
 });
 
 // Render the homepage (featured artists)
