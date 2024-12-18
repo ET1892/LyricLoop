@@ -1,0 +1,164 @@
+/* Colours */
+:root {
+    /* Dark mode is the default */
+    --background: #121212;
+    --text: white;
+    --header-background: #1e1e1e;
+
+    --orange: #d65d0e;
+}
+
+/* TODO add more stuff here */
+@media (prefers-color-scheme: light) {
+    :root {
+        --background: #eaeaea;
+        --text: black;
+        --header-background: #f2f2f2;
+    }
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+}
+
+main {
+    max-width: 800px;
+    margin: auto;
+    text-align: center;
+}
+
+a {
+    color: var(--orange);
+}
+
+header a {
+    color: inherit;
+}
+
+img {
+    border: 2px solid var(--orange);
+    border-radius: 50%;
+    max-width: 40%;
+}
+
+hr {
+    border: 2px solid var(--orange);
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+header {
+    background-color: var(--header-background);
+    text-align: center;
+}
+
+#header-content {
+    align-items: center;
+    padding: 20px;
+}
+
+header h1 a {
+    color: var(--orange);
+    text-decoration: none;
+}
+
+header h1 a:hover {
+    text-decoration: underline;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+nav ul li {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    border: 2px solid var(--orange);
+    border-radius: 5px;
+}
+
+nav ul li:hover {
+    background-color: var(--orange);
+}
+
+footer {
+    background-color: var(--header-background);
+    text-align: center;
+    margin-top: 40px;
+}
+
+#footer-text {
+    padding-top: 5px;
+    padding-bottom: 15px;
+}
+
+.lyrics {
+    border: 2px solid var(--orange);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+iframe {
+    border-radius: 10px;
+}
+
+.section-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.featured-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 800px;
+    text-align: left;
+}
+
+.featured-item {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    background-color: var(--header-background);
+    border: 2px solid var(--orange);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.featured-item:hover {
+    transform: scale(1.02);
+}
+
+.featured-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+    border: 2px solid var(--orange);
+}
+
+.info {
+    flex: 1;
+}
+
+.name {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.details {
+    font-size: 14px;
+    margin: 5px 0;
+}

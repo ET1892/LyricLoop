@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-IE">
+    <head>
+        <%- include("partials/metadata.html") -%>
+
+        <title><%= artistInfo.name %> | Lyric Loop</title>
+    </head>
+
+    <body>
+        <%- include("partials/header.html") -%>
+
+        <main>
+            <h1><%= artistInfo.name %></h1>
+
+            <% if (artistInfo.image) { %>
+                <img src="<%= artistInfo.image %>" alt="Image of <%= artistInfo.name %>" loading="lazy">
+            <% } else { %>
+                <p>Artist image not available.</p>
+            <% } %>
+
+            <h2>Biography</h2>
+            <p><%= artistInfo.bio || "Biography not available." %></p>
+
+            <h2>Similar Artists</h2>
+            <p>
+                <% if (artistInfo.similarArtists) { %>
+                    <%- artistInfo.similarArtists
+                        .map(artist => `<a href="/artist/${artist.toLowerCase().replace(/\s+/g, '-')}">${artist}</a>`)
+                        .join(", "); %>
+                <% } else { %>
+                    "No similar artists found."
+                <% } %>
+            </p>
+
+            <h2>Top 10 Songs</h2>
+            <ol class="featured-list">
+                <% artistInfo.topTracks.forEach((track, index) => { %>
+                    <li class="featured-item">
+                        <!-- TODO add album covers -->
+
+                        <div class="info">
+                            <h2 class="name">
+                                <%= index + 1 %>.
+                                <a href="/<%= artistInfo.name.toLowerCase().replace(/\s+/g, '-') %>-<%= track.name.toLowerCase().replace(/\s+/g, '-') %>-lyrics">
+                                    <%= track.name %>
+                                </a>
+                            </h2>
+
+                            <p class="details"><b>Listeners:</b> <%= Number(track.listeners).toLocaleString() %></p>
+                        </div>
+                    </li>
+                <% }); %>
+            </ol>
+        </main>
+
+        <%- include("partials/footer.html") -%>
+    </body>
+</html>

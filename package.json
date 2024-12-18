@@ -12,7 +12,13 @@
   },
   "author": "Ethan Toomey, Ciara Maguire, Joe Smullen, Bradley Ekhodiahi",
   "dependencies": {
+    "axios": "^1.7.8",
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
-    "express": "^4.21.1"
+    "cheerio": "^1.0.0",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "mongoose": "^8.8.3"
   }
 }

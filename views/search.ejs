@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en-IE">
+    <head>
+        <%- include("partials/metadata.html") -%>
+
+        <title>Search | Lyric Loop</title>
+    </head>
+    <body>
+        <%- include("partials/header.html") -%>
+
+        <main>
+            <div class="container">
+                <h1>Search for Songs</h1>
+
+                <form method="POST" action="/search">
+                    <input type="text" name="search_query" placeholder="Enter a song or artist's name" required>
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+        </main>
+
+        <%- include("partials/footer.html") -%>
+    </body>
+</html>
