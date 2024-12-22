@@ -2,9 +2,6 @@
 
 ## 🪲 bugs
 
-- Fix artist pages for artists with hyphens in their name
-    - e.g. Jay-Z, Mach-Hommy, Ne-Yo
-
 - Charts page is buggy, since the songs come from Last.fm but the lyrics etc.
 come from Genius
     - e.g. "tv off" by Kendrick Lamar on the charts redirects to a Turkish

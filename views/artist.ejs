@@ -19,38 +19,46 @@
             <% } %>
 
             <h2>Biography</h2>
-            <p><%= artistInfo.bio || "Biography not available." %></p>
+            <% if (artistInfo.bio && artistInfo.bio.trim()) { %>
+                <p><%= artistInfo.bio %></p>
+            <% } else { %>
+                <p>Biography not available.</p>
+            <% } %>
 
             <h2>Similar Artists</h2>
-            <p>
-                <% if (artistInfo.similarArtists) { %>
+            <% if (Array.isArray(artistInfo.similarArtists)  && artistInfo.similarArtists.length > 0) { %>
+                <p>
                     <%- artistInfo.similarArtists
-                        .map(artist => `<a href="/artist/${artist.toLowerCase().replace(/\s+/g, '-')}">${artist}</a>`)
+                        .map(artist => `<a href="/artist/${artist}">${artist}</a>`)
                         .join(", "); %>
-                <% } else { %>
-                    "No similar artists found."
-                <% } %>
-            </p>
+                </p>
+            <% } else { %>
+                <p>No similar artists found.</p>
+            <% } %>
 
             <h2>Top 10 Songs</h2>
-            <ol class="featured-list">
-                <% artistInfo.topTracks.forEach((track, index) => { %>
-                    <li class="featured-item">
-                        <!-- TODO add album covers -->
+            <% if (Array.isArray(artistInfo.topTracks) && artistInfo.topTracks.length > 0) { %>
+                <ol class="featured-list">
+                    <% artistInfo.topTracks.forEach((track, index) => { %>
+                        <li class="featured-item">
+                            <!-- TODO add album covers, description?, etc -->
 
-                        <div class="info">
-                            <h2 class="name">
-                                <%= index + 1 %>.
-                                <a href="/<%= artistInfo.name.toLowerCase().replace(/\s+/g, '-') %>-<%= track.name.toLowerCase().replace(/\s+/g, '-') %>-lyrics">
-                                    <%= track.name %>
-                                </a>
-                            </h2>
+                            <div class="info">
+                                <h2 class="name">
+                                    <%= index + 1 %>.
+                                    <a href="/<%= artistInfo.name %>-<%= track.name %>-lyrics">
+                                        <%= track.name %>
+                                    </a>
+                                </h2>
 
-                            <p class="details"><b>Listeners:</b> <%= Number(track.listeners).toLocaleString() %></p>
-                        </div>
-                    </li>
-                <% }); %>
-            </ol>
+                                <p class="details"><b>Listeners:</b> <%= Number(track.listeners).toLocaleString() %></p>
+                            </div>
+                        </li>
+                    <% }); %>
+                </ol>
+            <% } else { %>
+                <p>Top 10 songs not available.</p>
+            <% } %>
         </main>
 
         <%- include("partials/footer.html") -%>

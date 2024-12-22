@@ -109,8 +109,8 @@ app.get("/results", async (req, res) => {
 app.get("/lyrics", async (req, res) => {
     let { artist, title } = req.query;
 
-    artist = artist.toLowerCase().replace(/\s+/g, "-");
-    title = title.toLowerCase().replace(/\s+/g, "-");
+    // artist = artist.toLowerCase().replace(/\s+/g, "-");
+    // title = title.toLowerCase().replace(/\s+/g, "-");
 
     res.redirect(`/${artist}-${title}-lyrics`);
 });
@@ -149,7 +149,7 @@ app.get("/artist/:artistName", async (req, res) => {
     try {
         let artistName = req.params.artistName;
 
-        artistName = artistName.replace(/-/g, " ");
+        // artistName = artistName.replace(/-/g, " ");
 
         const artistInfo = await api.getArtistInfo(artistName);
 
