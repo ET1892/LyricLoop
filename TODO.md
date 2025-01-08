@@ -24,10 +24,6 @@ come from Genius
 - Add password reset option
 - Add "incorrect password" JS to login page?
 
-## 🎨 style
-
-- CSS: Fix input box width on login pages
-
 ## 🔀 misc
 
 - Add a README

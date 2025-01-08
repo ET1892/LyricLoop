@@ -13,7 +13,12 @@
             <h1><%= artistInfo.name %></h1>
 
             <% if (artistInfo.image) { %>
-                <img src="<%= artistInfo.image %>" alt="Image of <%= artistInfo.name %>" loading="lazy">
+                <img
+                    src="<%= artistInfo.image %>"
+                    alt="Image of <%= artistInfo.name %>"
+                    title="Image of <%= artistInfo.name %>"
+                    loading="lazy"
+                >
             <% } else { %>
                 <p>Artist image not available.</p>
             <% } %>

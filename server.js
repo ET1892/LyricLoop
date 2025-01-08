@@ -35,9 +35,9 @@ app.get("/signup", (req, res) => {
     res.render("signup");
 });
 
-// Login page
-app.get("/login", (req, res) => {
-    res.render("login");
+// Login page (start page)
+app.get("/", (req, res) => {
+    res.render("index");
 });
 
 // Render the charts page
@@ -161,11 +161,11 @@ app.get("/artist/:artistName", async (req, res) => {
 });
 
 // Render the homepage (featured artists)
-app.get("/", async (req, res) => {
+app.get("/featured", async (req, res) => {
     const featuredData = await api.getFeaturedArtists();
 
     if (featuredData) {
-        res.render("index", { featuredData });
+        res.render("featured", { featuredData });
     } else {
         res.status(500).send("Error loading featured page.");
     }

@@ -3,40 +3,30 @@
     <head>
         <%- include("partials/metadata.html") -%>
 
-        <title>Featured Artists | Lyric Loop</title>
+        <title>Log In | Lyric Loop</title>
     </head>
 
     <body>
-        <%- include("partials/header.html") -%>
-
         <main>
-            <h1 class="section-title">Featured Artists</h1>
+            <div class="login-container">
+                <h1>Log In</h1>
+                <hr>
 
-            <ul class="featured-list">
-                <% featuredData.forEach((item) => { %>
-                    <li class="featured-item">
-                        <img
-                            src="<%= item.image %>"
-                            alt="Image of <%= item.name %>"
-                            class="featured-image"
-                            loading="lazy"
-                        >
+                <form method="POST" action="/login">
+                    <label for="email"><b>Email Address</b></label>
+                    <input type="text" name="email" placeholder="Enter your email address..." required>
 
-                        <div class="info">
-                            <h3 class="name">
-                                <% if (item.name) { %>
-                                    <a href="/artist/<%= item.name %>"><%= item.name %></a>
-                                <% } else { %>
-                                    (Unknown Artist)
-                                <% } %>
-                            </h3>
-                            <p class="details"><%= item.details %></p>
-                        </div>
-                    </li>
-                <% }); %>
-            </ul>
+                    <label for="password"><b>Password</b></label>
+                    <input type="password" name="password" placeholder="Enter your password..." required>
+
+                    <button type="submit">Log In</button>
+                </form>
+
+                <hr>
+                <div class="switch-page">
+                    <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+                </div>
+            </div>
         </main>
-
-        <%- include("partials/footer.html") -%>
     </body>
 </html>
