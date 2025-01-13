@@ -57,7 +57,7 @@ app.post("/signup", async (req, res) => {
 
     try {
         console.log(`New user: ${firstName} ${lastName}, Email: ${email}`);
-        res.redirect("/");
+        res.redirect("/featured");
     } catch (err) {
         console.error(`Error during signup: ${err.message}`);
         res.status(500).send("Error during signup");
