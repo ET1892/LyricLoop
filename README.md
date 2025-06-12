@@ -21,4 +21,3 @@ MONGO_URI="mongodb+srv://YOUR_MONGO_URL_HERE"
 - Install the dependencies: `npm i`
 - Run the server: `node server.js`
 - Open `http://localhost:3000/` in your browser.
-
