@@ -22,6 +22,3 @@ MONGO_URI="mongodb+srv://YOUR_MONGO_URL_HERE"
 - Run the server: `node server.js`
 - Open `http://localhost:3000/` in your browser.
 
-If you get an error while logging in, just bypass the login/signup entirely
-by changing the URL to e.g. `http://localhost:3000/search`. We didn't have
-time to fix that.
