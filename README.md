@@ -17,7 +17,7 @@ LAST_FM_API_KEY="YOUR_API_KEY_HERE"
 MONGO_URI="mongodb+srv://YOUR_MONGO_URL_HERE"
 ```
 
-- Rename the file to just `.env`
+- Rename the file to just `".env"`
 - Install the dependencies: `npm i`
 - Run the server: `node server.js`
 - Open `http://localhost:3000/` in your browser.
