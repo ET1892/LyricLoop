@@ -1,20 +1,25 @@
-# 🛠️ Setup
+### Lyric Loop
 
-I forgot to mention a few things in the zip file I uploaded, so here are the
-proper setup instructions. Apologies for the confusion.
+Lyric Loop is a full-stack web application that brings your favorite music to life by connecting with the Last.fm and Genius APIs.  
+Users can explore lyrics, track favorite artists, follow charts, and create a personalised listening experience - all while keeping their data private.
 
-- Create a Genius access token and Last.fm API key, if you haven't already:
-    - https://docs.genius.com/
-    - https://www.last.fm/api
+**Key Features for Users:**
+- **Charts Page:** Stay up to date with trending songs and artists, discovering what’s popular in real time.  
+- **Artist Page:** Dive deeper into your favorite artists, see similar artists, and add them to your "Liked Artists".  
+- **Search Page:** Quickly find any song or artist, with a clean, fast, and private search experience.  
+- **Song Page:** Follow along with lyrics in real time, view song details, and optionally play songs on YouTube.  
+- **Privacy-first design:** User data is never shared unnecessarily, and the interface is simple and distraction-free.
 
-- Add your credentials to the `example.env` file:
+**Technical Stack:**
+- **Backend:** Node.js with Express.js serving dynamic content.  
+- **Templating:** EJS for rendering pages with dynamic data from APIs.  
+- **Frontend:** Standard HTML, CSS, and JavaScript for responsive and intuitive UI.  
+- **Authentication & Security:**  
+  - Secure login system for user accounts (optional in some setups).  
+  - Token-based API calls to Last.fm and Genius, keeping user credentials safe.  
+- **Data & APIs:**  
+  - Last.fm API for user listening data, charts, and top artists.  
+  - Genius API for song lyrics and artist details.  
+- **Deployment:** Easily deployable on platforms like Netlify, Vercel, or any Node.js hosting solution.
 
-```
-GENIUS_ACCESS_TOKEN="YOUR_TOKEN_HERE"
-LAST_FM_API_KEY="YOUR_API_KEY_HERE"
-```
-
-- Rename the file to just `".env"`
-- Install the dependencies: `npm i`
-- Run the server: `node server.js`
-- Open `http://localhost:3000/` in your browser.
+Lyric Loop combines **music discovery, lyrics, and personalised tracking** with a clean, secure interface, giving users a seamless way to explore music without compromising privacy.

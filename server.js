@@ -37,7 +37,7 @@ app.get("/signup", (req, res) => {
 
 // Login page (start page)
 app.get("/", (req, res) => {
-    res.render("index");
+    res.render("/featured");
 });
 
 // Render the charts page
